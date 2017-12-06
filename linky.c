@@ -214,43 +214,20 @@ void sorted_insert(struct node **headref, struct node *new_node)
     if (!new_node)
         return;
 
-    struct node *head = *headref;
-    if (!head)
+    if (*headref == NULL || (*headref)->data > new_node->data) // add at head
     {
-        printf("Empty list - adding at front\n");
+        printf("Adding at HEAD!\n");
+        new_node->next = *headref;
         *headref = new_node;
-        return;
     }
-
-    struct node *cur = head;
-    if (cur->data > new_node->data) // add at head
+    else
     {
-        printf("curdata %d is GREATER than %d - adding at head\n", cur->data, new_node->data);
-        new_node->next = cur;
-        *headref = new_node;
-        return;
-    }
-    while (cur != NULL)
-    {
-        if (cur->next && cur->next->data < new_node->data)
-        {
-            printf("Next contains %d which iss till LESS than %d - continuing\n", cur->next->data, new_node->data);
+        struct node *cur = *headref;
+        while (cur->next != NULL && cur->next->data < new_node->data)
             cur = cur->next;
-            continue;
-        }
-        else if (cur->next && cur->next->data > new_node->data)
-        {
-            printf("Next contains %d which is GREATER than %d - INSERTING\n", cur->next->data, new_node->data);
-            new_node->next = cur->next;
-            cur->next = new_node;
-            return;
-        }
-        else // end of list, insert here
-        {
-            printf("End of list - add to tail\n");
-            cur->next = new_node;
-            return;
-        }
+
+        new_node->next = cur->next;
+        cur->next = new_node;
     }
 }
 
