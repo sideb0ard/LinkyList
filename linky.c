@@ -214,9 +214,9 @@ void sorted_insert(struct node **headref, struct node *new_node)
     if (!new_node)
         return;
 
-    if (*headref == NULL || (*headref)->data > new_node->data) // add at head
+    if (*headref == NULL || (*headref)->data > new_node->data)
     {
-        printf("Adding at HEAD!\n");
+        printf("INsert at HEAD!\n");
         new_node->next = *headref;
         *headref = new_node;
     }
@@ -230,6 +230,25 @@ void sorted_insert(struct node **headref, struct node *new_node)
         cur->next = new_node;
     }
 }
+
+void sorted_insert_with_dummy(struct node **headref, struct node *new_node)
+{
+    if (!new_node)
+        return;
+
+    struct node dummy;
+    dummy.next = *headref;
+
+    struct node *cur = &dummy;
+    while (cur->next != NULL && cur->next->data < new_node->data)
+        cur = cur->next;
+
+    new_node->next = cur->next;
+    cur->next = new_node;
+
+    *headref = dummy.next;
+}
+
 
 int main()
 {
